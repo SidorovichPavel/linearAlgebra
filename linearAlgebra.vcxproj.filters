@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{ec6067c1-0884-4e3b-a007-46354bdbef94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\MathObjects">
+      <UniqueIdentifier>{e72d3cd3-6ee0-4e59-afbb-6e3c96144cda}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\linearAlgebra.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\MathObjects\vector.h">
+      <Filter>src\MathObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MathObjects\Matrix.h">
+      <Filter>src\MathObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MathObjects\array_wrapper.h">
+      <Filter>src\MathObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\linearAlgebra.h">
+      <Filter>src</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
