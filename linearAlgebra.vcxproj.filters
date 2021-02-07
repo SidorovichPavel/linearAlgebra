@@ -7,6 +7,9 @@
     <Filter Include="src\MathObjects">
       <UniqueIdentifier>{e72d3cd3-6ee0-4e59-afbb-6e3c96144cda}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\glm">
+      <UniqueIdentifier>{f23e67f9-b8a9-4fa9-85f8-2739f93bee17}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\linearAlgebra.cpp">
@@ -25,6 +28,75 @@
     </ClInclude>
     <ClInclude Include="src\linearAlgebra.h">
       <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\glm\common.hpp">
+      <Filter>src\glm</Filter>
+    </ClInclude>
+    <ClInclude Include="src\glm\exponential.hpp">
+      <Filter>src\glm</Filter>
+    </ClInclude>
+    <ClInclude Include="src\glm\ext.hpp">
+      <Filter>src\glm</Filter>
+    </ClInclude>
+    <ClInclude Include="src\glm\fwd.hpp">
+      <Filter>src\glm</Filter>
+    </ClInclude>
+    <ClInclude Include="src\glm\geometric.hpp">
+      <Filter>src\glm</Filter>
+    </ClInclude>
+    <ClInclude Include="src\glm\glm.hpp">
+      <Filter>src\glm</Filter>
+    </ClInclude>
+    <ClInclude Include="src\glm\integer.hpp">
+      <Filter>src\glm</Filter>
+    </ClInclude>
+    <ClInclude Include="src\glm\mat2x2.hpp">
+      <Filter>src\glm</Filter>
+    </ClInclude>
+    <ClInclude Include="src\glm\mat2x3.hpp">
+      <Filter>src\glm</Filter>
+    </ClInclude>
+    <ClInclude Include="src\glm\mat2x4.hpp">
+      <Filter>src\glm</Filter>
+    </ClInclude>
+    <ClInclude Include="src\glm\mat3x2.hpp">
+      <Filter>src\glm</Filter>
+    </ClInclude>
+    <ClInclude Include="src\glm\mat3x3.hpp">
+      <Filter>src\glm</Filter>
+    </ClInclude>
+    <ClInclude Include="src\glm\mat3x4.hpp">
+      <Filter>src\glm</Filter>
+    </ClInclude>
+    <ClInclude Include="src\glm\mat4x2.hpp">
+      <Filter>src\glm</Filter>
+    </ClInclude>
+    <ClInclude Include="src\glm\mat4x3.hpp">
+      <Filter>src\glm</Filter>
+    </ClInclude>
+    <ClInclude Include="src\glm\mat4x4.hpp">
+      <Filter>src\glm</Filter>
+    </ClInclude>
+    <ClInclude Include="src\glm\matrix.hpp">
+      <Filter>src\glm</Filter>
+    </ClInclude>
+    <ClInclude Include="src\glm\packing.hpp">
+      <Filter>src\glm</Filter>
+    </ClInclude>
+    <ClInclude Include="src\glm\trigonometric.hpp">
+      <Filter>src\glm</Filter>
+    </ClInclude>
+    <ClInclude Include="src\glm\vec2.hpp">
+      <Filter>src\glm</Filter>
+    </ClInclude>
+    <ClInclude Include="src\glm\vec3.hpp">
+      <Filter>src\glm</Filter>
+    </ClInclude>
+    <ClInclude Include="src\glm\vec4.hpp">
+      <Filter>src\glm</Filter>
+    </ClInclude>
+    <ClInclude Include="src\glm\vector_relational.hpp">
+      <Filter>src\glm</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

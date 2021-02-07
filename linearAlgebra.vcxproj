@@ -158,10 +158,33 @@
     <ClCompile Include="src\linearAlgebra.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\glm\common.hpp" />
+    <ClInclude Include="src\glm\exponential.hpp" />
+    <ClInclude Include="src\glm\ext.hpp" />
+    <ClInclude Include="src\glm\fwd.hpp" />
+    <ClInclude Include="src\glm\geometric.hpp" />
+    <ClInclude Include="src\glm\glm.hpp" />
+    <ClInclude Include="src\glm\integer.hpp" />
+    <ClInclude Include="src\glm\mat2x2.hpp" />
+    <ClInclude Include="src\glm\mat2x3.hpp" />
+    <ClInclude Include="src\glm\mat2x4.hpp" />
+    <ClInclude Include="src\glm\mat3x2.hpp" />
+    <ClInclude Include="src\glm\mat3x3.hpp" />
+    <ClInclude Include="src\glm\mat3x4.hpp" />
+    <ClInclude Include="src\glm\mat4x2.hpp" />
+    <ClInclude Include="src\glm\mat4x3.hpp" />
+    <ClInclude Include="src\glm\mat4x4.hpp" />
+    <ClInclude Include="src\glm\matrix.hpp" />
+    <ClInclude Include="src\glm\packing.hpp" />
+    <ClInclude Include="src\glm\trigonometric.hpp" />
+    <ClInclude Include="src\glm\vec2.hpp" />
+    <ClInclude Include="src\glm\vec3.hpp" />
+    <ClInclude Include="src\glm\vec4.hpp" />
+    <ClInclude Include="src\glm\vector_relational.hpp" />
     <ClInclude Include="src\linearAlgebra.h" />
     <ClInclude Include="src\MathObjects\array_wrapper.h" />
     <ClInclude Include="src\MathObjects\Matrix.h" />
-    <ClInclude Include="src\MathObjects\vector.h" />
+    <ClInclude Include="src\MathObjects\Vector.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
