@@ -182,7 +182,6 @@
     <ClInclude Include="src\glm\vec4.hpp" />
     <ClInclude Include="src\glm\vector_relational.hpp" />
     <ClInclude Include="src\linearAlgebra.h" />
-    <ClInclude Include="src\MathObjects\array_wrapper.h" />
     <ClInclude Include="src\MathObjects\Matrix.h" />
     <ClInclude Include="src\MathObjects\Vector.h" />
   </ItemGroup>

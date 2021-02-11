@@ -7,7 +7,7 @@
 namespace la
 {
 	//calc
-	float dot(const vec3& v1, const vec3& v2)
+	place float dot(const vec3& v1, const vec3& v2)
 	{
 		float res = 0;
 		for (auto it1 = v1.begin(), it2 = v2.begin(); it1 != v1.end();)
@@ -19,12 +19,12 @@ namespace la
 		return res;
 	}
 
-	float dot2(const vec3& v)
+	place float dot2(const vec3& v)
 	{
 		return dot(v, v);
 	}
 
-	float length(const vec3& v)
+	place float length(const vec3& v)
 	{
 		return std::sqrtf(dot2(v));
 	}
@@ -93,7 +93,7 @@ namespace la
 
 	}
 
-	mat4 translate(const mat4& M, const vec3& v)
+	place mat4 translate(const mat4& M, const vec3& v)
 	{
 		mat4 result(M);
 		#ifdef COL_MAJOR
@@ -104,7 +104,7 @@ namespace la
 		return result;
 	}
 
-	mat4 scale(mat4& mat, const vec3& vec)
+	place mat4 scale(mat4& mat, const vec3& vec)
 	{
 		mat4 result;
 		#ifdef COL_MAJOR
@@ -116,17 +116,17 @@ namespace la
 		return result;
 	}
 
-	mat4 rotate(mat4& mat, const vec3& vec, float angle)
+	place mat4 rotate(mat4& mat, const vec3& vec, float angle)
 	{
 		float sin = std::sinf(angle);
 		float cos = std::cosf(angle);
 		
 		vec3 axis = normalize(vec);
-		vec3 temp = axis * (1.f - cos);
+		vec3 temp(axis * (1.f - cos));
 
 		mat4 result(1.f);
 #ifdef COL_MAJOR
-		mat4 rotate;
+		mat3 rotate;
 
 		rotate[0][0] = cos + temp[0] * axis[0];
 		rotate[0][1] = temp[0] * axis[1] + sin * axis[2];
@@ -134,7 +134,7 @@ namespace la
 
 		rotate[1][0] = temp[1] * axis[0] - sin * axis[2];
 		rotate[1][1] = cos + temp[1] * axis[1];
-		rotate[1][2] = temp[2] * axis[2] + sin * axis[0];
+		rotate[1][2] = temp[1] * axis[2] + sin * axis[0];
 
 		rotate[2][0] = temp[2] * axis[0] + sin * axis[1];
 		rotate[2][1] = temp[2] * axis[1] - sin * axis[0];
@@ -161,7 +161,7 @@ namespace la
 	}
 
 	
-	mat4 perspeсtive(float zNear, float zFar, float aspect, float fov)
+	place mat4 perspeсtive(float zNear, float zFar, float aspect, float fov)
 	{
 		assert(std::abs(aspect - std::numeric_limits<float>::epsilon()) > static_cast<float>(0));
 
@@ -176,37 +176,24 @@ namespace la
 		return Result;
 	}
 
-}
+	place mat4 lock_at(const vec3& pos, const vec3& target, const vec3& up)
+	{
+		vec3 Dir = normalize(pos - target);
+		vec3 Right = normalize(up * Dir);
+		vec3 Up = Dir * Right;
+		mat4 result(1.f);
 
-//
-//la::mat4 operator*(const la::mat4& A, const la::mat4& B)
-//{
-//	la::mat4 res;
-//	la::micro_4x4((float*)A.data(), (float*)B.data(), res.data());
-//	return res;
-//}
-//
-//la::vec4 operator*(const la::mat4& A, const la::vec4& vec)
-//{
-//	la::vec4 res;
-//	__m128 result = _mm_setzero_ps();
-//
-//	la::buf<float, 16, 16> matT;
-//	auto ptr = matT._Ptr;
-//	for (auto i = 0; i < 4; ++i)
-//		for (auto j = 0; j < 4; ++j, ++ptr)
-//			*ptr = A[j][i];
-//
-//	ptr = matT._Ptr;
-//	auto v_ptr = vec.data();
-//	__m128 v, a;
-//	for (auto i = 0; i < 4; ++i, ptr += 4, ++v_ptr)
-//	{
-//		v = _mm_set_ps1(*v_ptr);
-//		a = _mm_load_ps(ptr);
-//		result = _mm_fmadd_ps(v, a, result);
-//	}
-//
-//	_mm_storeu_ps(res.data(), result);
-//	return res;
-//}
+		for (auto i = 0; i < 3; ++i)
+		{
+			result[i][0] = Right[i];
+			result[i][1] = Up[i];
+			result[i][2] = Dir[i];
+		}
+		result[3][0] = -dot(Right, pos);
+		result[3][1] = -dot(Up, pos);
+		result[3][2] = -dot(Dir, pos);
+
+		return result;
+	}
+
+}

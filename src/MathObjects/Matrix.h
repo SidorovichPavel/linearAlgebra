@@ -4,6 +4,12 @@
 #include <src/MathObjects/Vector.h>
 #include <algorithm>
 
+#ifdef __location__
+	#define place __device__ __host__
+#else
+	#define place
+#endif
+
 namespace la
 {
 	namespace hide
@@ -16,118 +22,123 @@ namespace la
 			using value_type = Vector<T, N>;
 			using reference = value_type&;
 			using pointer = value_type*;
+			using const_pointer = const value_type*;
 
 			using col_type = Vector<T, N>;
 			using iterator = col_type*;
-			using const_iterator = col_type;
+			using const_iterator = const iterator;
 
 			using prev_dim_matrix = typename Matrix<T, M - 1, N - 1>;
 
-			constexpr static size_t count() { return M; }
+			place constexpr static size_t count() { return M; }
 
-			constexpr Matrix() noexcept
+			place constexpr Matrix() noexcept
 			{}
 
 			template<class _Ty>
-			constexpr Matrix(_Ty _Value = static_cast<_Ty>(1)) noexcept
+			place constexpr Matrix(_Ty _Value = static_cast<_Ty>(1)) noexcept
 			{
 				if constexpr (M == N)
 					for (auto i = 0; i < M; ++i)_Elems[i][i] = static_cast<T>(_Value);
 			}
 
-			constexpr Matrix(const Matrix& _Other) noexcept
+			place constexpr Matrix(const Matrix& _Other) noexcept
 			{
 				std::copy(_Other.begin(), _Other.end(), begin());
 			}
 
-			constexpr Matrix(Matrix&& _Other) noexcept
+			place constexpr Matrix(Matrix&& _Other) noexcept
 			{
 				std::copy(_Other.begin(), _Other.end(), begin());
 			}
 
-			constexpr Matrix(const prev_dim_matrix& _Mat) noexcept
+			place constexpr Matrix(const prev_dim_matrix& _Mat) noexcept
 			{
 				for (auto i = 0; i < prev_dim_matrix::count(); ++i) _Elems[i] = col_type(_Mat[i], static_cast<T>(0));
 				_Elems[M - 1][N - 1] = static_cast<T>(1);
 			}
 
-			constexpr Matrix(const std::initializer_list<col_type>& _Init_List) noexcept
+			place constexpr Matrix(const std::initializer_list<col_type>& _Init_List) noexcept
 			{
 				auto size = std::distance(_Init_List.begin(), _Init_List.end());
 				assert(size <= N * M);
 				for (auto i = 0; i < size; ++i) _Elems[i] = *(_Init_List.begin() + i);
 			}
 
-			constexpr iterator begin() const noexcept
+			place constexpr iterator begin() const noexcept
 			{
 				return iterator(_Elems);
 			}
 
-			constexpr iterator end() const noexcept
+			place constexpr iterator end() const noexcept
 			{
 				return iterator(_Elems + M);
 			}
 
-			constexpr const_iterator cbegin() const noexcept
+			place constexpr const_iterator cbegin() const noexcept
 			{
 				return const_iterator(_Elems);
 			}
 
-			constexpr const_iterator cend() const noexcept
+			place constexpr const_iterator cend() const noexcept
 			{
 				return const_iterator(_Elems + M);
 			}
 
-			reference operator[](unsigned _Index) noexcept
-			{
-				assert(_Index <= M);
-				return _Elems[_Index];
-			}
-			
-			value_type operator[](unsigned _Index) const noexcept
+			place reference operator[](unsigned _Index) noexcept
 			{
 				assert(_Index <= M);
 				return _Elems[_Index];
 			}
 
-			pointer data() noexcept
+			place value_type operator[](unsigned _Index) const noexcept
 			{
-				return _Elems;
+				assert(_Index <= M);
+				return _Elems[_Index];
 			}
 
-			const pointer data() const noexcept
+			place pointer data() noexcept
 			{
-				return (const pointer)_Elems;
+				return pointer(_Elems);
 			}
 
-			Matrix& operator=(const Matrix& _Right)
+			place const_pointer data() const noexcept
+			{
+				return (const_pointer)_Elems;
+			}
+
+			place Matrix& operator=(const Matrix& _Right)
 			{
 				std::copy(_Right.begin(), _Right.end(), begin());
 				return *this;
 			}
 
-			Matrix& operator+() { return*this; }
+			place Matrix& operator+() { return*this; }
 
-			Matrix& operator-()
+			place Matrix& operator-()
 			{
 				std::transform(begin(), end(), begin(), [] (auto& e) {return -e; });
 				return *this;
 			}
+
+			//mathods
+
+			//mathods end
 
 		private:
 			col_type _Elems[M];
 		};
 
 		template<class T, size_t M, size_t N>
-		Matrix<T, M, N> operator+(const Matrix<T, M, N>& m1, const Matrix<T, M, N>& m2) noexcept
+		place Matrix<T, M, N> operator+(const Matrix<T, M, N>& m1, const Matrix<T, M, N>& m2) noexcept
 		{
 			Matrix<T, M, N> result;
 			std::transform(m1.begin(), m1.end(), m2.begin(), result.begin(), [] (auto& e1, auto& e2) { return e1 + e2; });
 			return result;
 		}
-		
+
 		template<class T, size_t M, size_t N>
-		Matrix<T, M, N> operator-(const Matrix<T, M, N>& m1, const Matrix<T, M, N>& m2) noexcept
+		place Matrix<T, M, N> operator-(const Matrix<T, M, N>& m1, const Matrix<T, M, N>& m2) noexcept
 		{
 			Matrix<T, M, N> result;
 			std::transform(m1.begin(), m1.end(), m2.begin(), result.begin(), [] (auto& e1, auto& e2) { return e1 - e2; });
@@ -135,39 +146,39 @@ namespace la
 		}
 
 		template<class T, size_t M, size_t N>
-		Matrix<T, M, N> operator*(const Matrix<T, M, N>& m1, const T& k) noexcept
+		place Matrix<T, M, N> operator*(const Matrix<T, M, N>& m1, const T& k) noexcept
 		{
 			Matrix<T, M, N> result;
 			std::transform(m1.begin(), m1.end(), result.begin(), [&] (auto& e1) { return e1 * k; });
 			return result;
 		}
 		template<class T, size_t M, size_t N>
-		Matrix<T, M, N> operator/(const Matrix<T, M, N>& m1, const T& k) noexcept
+		place Matrix<T, M, N> operator/(const Matrix<T, M, N>& m1, const T& k) noexcept
 		{
 			Matrix<T, M, N> result;
 			std::transform(m1.begin(), m1.end(), result.begin(), [&] (auto& e1) { return e1 / k; });
 			return result;
 		}
 		template<class T, size_t M, size_t N>
-		Matrix<T, M, N> operator*(const T& k, const Matrix<T, M, N>& m1) noexcept
+		place Matrix<T, M, N> operator*(const T& k, const Matrix<T, M, N>& m1) noexcept
 		{
 			Matrix<T, M, N> result;
 			std::transform(m1.begin(), m1.end(), result.begin(), [&] (auto& e1) { return e1 * k; });
 			return result;
 		}
 		template<class T, size_t M, size_t N>
-		Matrix<T, M, N> operator/(const T& k, const Matrix<T, M, N>& m1) noexcept
+		place Matrix<T, M, N> operator/(const T& k, const Matrix<T, M, N>& m1) noexcept
 		{
 			Matrix<T, M, N> result;
 			std::transform(m1.begin(), m1.end(), result.begin(), [&] (auto& e1) { return e1 / k; });
 			return result;
 		}
 
-		template<class T, size_t M, size_t K, size_t N>
-		Matrix<T, M, N> operator*(const Matrix<T, M, K>& A, const Matrix<T, K, N>& B)
+		/*template<class T, size_t M, size_t K, size_t N>
+		place Matrix<T, M, N> operator*(const Matrix<T, M, K>& A, const Matrix<T, K, N>& B)
 		{
 			return Matrix<T, M, N>;
-		}
+		}*/
 
 		Matrix<float, 4, 4> operator*(const Matrix<float, 4, 4>& A, const Matrix<float, 4, 4>& B);
 

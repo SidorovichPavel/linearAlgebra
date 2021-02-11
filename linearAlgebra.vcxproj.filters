@@ -23,9 +23,6 @@
     <ClInclude Include="src\MathObjects\Matrix.h">
       <Filter>src\MathObjects</Filter>
     </ClInclude>
-    <ClInclude Include="src\MathObjects\array_wrapper.h">
-      <Filter>src\MathObjects</Filter>
-    </ClInclude>
     <ClInclude Include="src\linearAlgebra.h">
       <Filter>src</Filter>
     </ClInclude>
