@@ -108,7 +108,7 @@ namespace la
 	
 	mat4 rotate(mat4& mat, const vec3& vec, float angle);
 	
-	mat4 perspeñtive(float near, float far, float aspect, float fov);
+	mat4 perspeñtive(float zNear, float zFar, float aspect, float fov);
 
 	mat4 lock_at(const vec3& pos, const vec3& target, const vec3& up);
 

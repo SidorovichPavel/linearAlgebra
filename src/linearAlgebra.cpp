@@ -56,7 +56,7 @@ namespace la
 		__m128 res3 = _mm_setzero_ps();
 
 		__m128 a0, b0;
-		
+
 		for (auto i = 0; i < 4; ++i, ++A)
 		{
 			b0 = _mm_loadu_ps(B);
@@ -76,6 +76,26 @@ namespace la
 		_mm_storeu_ps(Res + 12, res3);
 	}
 
+	void micro_4x1(float* A, float* V, float* Res)
+	{
+		buf<float, 16, 16> AT;
+		for (auto i = 0; i < 4; ++i)
+			for (auto j = 0; j < 4; ++j)
+				AT._Ptr[i * 4 + j] = A[j * 4 + i];
+
+		__m128 res = _mm_setzero_ps();
+		__m128 v;
+		__m128 line;
+		for (auto atIt = AT._Ptr; atIt != AT._Ptr + 16; atIt += 4)
+		{
+			v = _mm_set_ps1(*V); V++;
+			line = _mm_load_ps(atIt);
+			res = _mm_fmadd_ps(v, line, res);
+		}
+
+		_mm_store_ps(Res, res);
+	}
+
 	namespace hide
 	{
 		Matrix<float, 4, 4> operator*(const Matrix<float, 4, 4>& A, const Matrix<float, 4, 4>& B)
@@ -83,13 +103,26 @@ namespace la
 			Matrix<float, 4, 4> result;
 			Matrix<float, 4, 4> cmp_res;
 			#ifdef COL_MAJOR
-				micro_4x4((float*)B.data(), (float*)A.data(), (float*)result.data());
+			micro_4x4((float*)B.data(), (float*)A.data(), (float*)result.data());
 			#else
-				micro_4x4((float*)A.data(), (float*)B.data(), (float*)result.data());
+			micro_4x4((float*)A.data(), (float*)B.data(), (float*)result.data());
 			#endif
 			return result;
 		}
 
+		Vector<float, 4> operator*(const Matrix<float, 4, 4>& A, const Vector<float, 4>& V)
+		{
+			Vector<float, 4> result(0);
+			#ifdef COL_MAJOR
+			for (auto i = 0; i < 4; ++i)
+			{
+				result[i] = A[0][i] * V[0] + A[1][i] * V[1] + A[2][i] * V[2] + A[3][i] * V[3];
+			}
+			#else
+			micro_4x1((float*)A.data(), (float*)V.data(), result.data());
+			#endif
+			return result;
+		}
 
 	}
 
@@ -120,12 +153,12 @@ namespace la
 	{
 		float sin = std::sinf(angle);
 		float cos = std::cosf(angle);
-		
+
 		vec3 axis = normalize(vec);
 		vec3 temp(axis * (1.f - cos));
 
 		mat4 result(1.f);
-#ifdef COL_MAJOR
+		#ifdef COL_MAJOR
 		mat3 rotate;
 
 		rotate[0][0] = cos + temp[0] * axis[0];
@@ -144,7 +177,7 @@ namespace la
 		result[1] = mat[0] * rotate[1][0] + mat[1] * rotate[1][1] + mat[2] * rotate[1][2];
 		result[2] = mat[0] * rotate[2][0] + mat[1] * rotate[2][1] + mat[2] * rotate[2][2];
 		result[3] = mat[3];
-#else
+		#else
 		result[0][0] = cos + vec[0] * vec[0] * _cos;
 		result[0][1] = vec[0] * vec[1] * _cos - vec[2] * sin;
 		result[0][2] = vec[0] * vec[2] * _cos + vec[2] * sin;
@@ -156,11 +189,11 @@ namespace la
 		result[2][0] = vec[1] * vec[2] * _cos - vec[2] * sin;
 		result[2][1] = vec[1] * vec[2] * _cos + vec[0] * sin;
 		result[2][2] = cos + vec[2] * vec[2] * _cos;
-#endif
+		#endif
 		return result;
 	}
 
-	
+
 	place mat4 perspeсtive(float zNear, float zFar, float aspect, float fov)
 	{
 		assert(std::abs(aspect - std::numeric_limits<float>::epsilon()) > static_cast<float>(0));
@@ -170,9 +203,9 @@ namespace la
 		mat4 Result(0.f);
 		Result[0][0] = ctgHalfFovy / aspect;
 		Result[1][1] = ctgHalfFovy;
-		Result[2][2] = - (zFar + zNear) / (zFar - zNear);
-		Result[2][3] = - 1.f;
-		Result[3][2] = - 2.f * zFar * zNear / (zFar - zNear);
+		Result[2][2] = -(zFar + zNear) / (zFar - zNear);
+		Result[2][3] = -1.f;
+		Result[3][2] = -2.f * zFar * zNear / (zFar - zNear);
 		return Result;
 	}
 

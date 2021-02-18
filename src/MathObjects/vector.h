@@ -22,6 +22,8 @@ namespace la
 			static_assert(_Dim > 0, "invalidate dimention!");
 		public:
 			friend Vector<T, _Dim - 1>;
+			friend Vector<T, _Dim + 1>;
+
 			using value_type = typename T;
 			using reference = T&;
 			using pointer = T*;
@@ -31,6 +33,7 @@ namespace la
 			using const_iterator = const T*;
 
 			using prev_dim_vector = typename Vector<T, _Dim - 1>;
+			using next_dim_vector = typename Vector<T, _Dim + 1>;
 
 			place constexpr static size_t count() { return _Dim; }
 
@@ -43,7 +46,10 @@ namespace la
 			template<class _Ty>
 			place constexpr Vector(_Ty _Value) noexcept
 			{
-				for (auto i = 0; i < _Dim; i++) _Elems[i] = static_cast<T>(_Value);
+				if constexpr (std::is_same<_Ty, Vector<T, _Dim + 1>>::value)
+					for (auto i = 0; i < _Dim; ++i)_Elems[i] = _Value[i];
+				else
+					for (auto i = 0; i < _Dim; i++) _Elems[i] = static_cast<T>(_Value);
 			}
 			place constexpr Vector(const Vector& _Other) noexcept
 			{
@@ -70,7 +76,7 @@ namespace la
 			{
 				_init_args(begin(), args...);
 			}
-			
+
 			//constructors end
 			//methods!!!
 
@@ -113,6 +119,16 @@ namespace la
 			{
 				assert(_Index < _Dim);
 				return _Elems[_Index];
+			}
+			place Vector& operator+=(const Vector& _Right) noexcept
+			{
+				for (auto i = 0; i < _Dim; ++i) _Elems[i] += _Right._Elems[i];
+				return *this;
+			}
+			place Vector& operator-=(const Vector& _Right) noexcept
+			{
+				for (auto i = 0; i < _Dim; ++i) _Elems[i] -= _Right._Elems[i];
+				return *this;
 			}
 			place pointer data() noexcept
 			{

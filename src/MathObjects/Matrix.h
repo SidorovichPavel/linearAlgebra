@@ -182,6 +182,8 @@ namespace la
 
 		Matrix<float, 4, 4> operator*(const Matrix<float, 4, 4>& A, const Matrix<float, 4, 4>& B);
 
+		Vector<float, 4> operator*(const Matrix<float, 4, 4>& A, const Vector<float, 4>& V);
+
 	}
 	using mat4 = hide::Matrix<float, 4, 4>;
 	using mat4u = hide::Matrix<unsigned, 4, 4>;
