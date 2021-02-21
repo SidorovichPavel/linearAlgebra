@@ -39,10 +39,11 @@ namespace la
 
 			//constructos
 
-			place constexpr Vector() noexcept
+			constexpr Vector() noexcept
 			{
 				for (auto i = 0; i < _Dim; i++) _Elems[i] = static_cast<T>(0);
 			}
+
 			template<class _Ty>
 			place constexpr Vector(_Ty _Value) noexcept
 			{
@@ -51,7 +52,7 @@ namespace la
 				else
 					for (auto i = 0; i < _Dim; i++) _Elems[i] = static_cast<T>(_Value);
 			}
-			place constexpr Vector(const Vector& _Other) noexcept
+			place Vector(const Vector& _Other) noexcept
 			{
 				for (auto i = 0; i < _Dim; ++i)_Elems[i] = _Other._Elems[i];
 			}
