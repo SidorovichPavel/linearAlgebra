@@ -26,7 +26,7 @@ namespace la
 
 			using col_type = Vector<T, N>;
 			using iterator = col_type*;
-			using const_iterator = const iterator;
+			using const_iterator = const col_type*;
 
 			using prev_dim_matrix = typename Matrix<T, M - 1, N - 1>;
 
@@ -39,78 +39,67 @@ namespace la
 			place constexpr Matrix(_Ty _Value = static_cast<_Ty>(1)) noexcept
 			{
 				if constexpr (M == N)
-					for (auto i = 0; i < M; ++i)_Elems[i][i] = static_cast<T>(_Value);
+					for (auto i = 0; i < M; ++i)mData[i][i] = static_cast<T>(_Value);
 			}
 
-			place constexpr Matrix(const Matrix& _Other) noexcept
-			{
-				std::copy(_Other.begin(), _Other.end(), begin());
-			}
-
-			place constexpr Matrix(Matrix&& _Other) noexcept
-			{
-				std::copy(_Other.begin(), _Other.end(), begin());
-			}
+			Matrix(const Matrix& _Other) = default;
+			Matrix& operator=(const Matrix&) = default;
+			Matrix(Matrix&& _Other) = default;
+			Matrix& operator=(Matrix&&) = default;
 
 			place constexpr Matrix(const prev_dim_matrix& _Mat) noexcept
 			{
-				for (auto i = 0; i < prev_dim_matrix::count(); ++i) _Elems[i] = col_type(_Mat[i], static_cast<T>(0));
-				_Elems[M - 1][N - 1] = static_cast<T>(1);
+				for (auto i = 0; i < prev_dim_matrix::count(); ++i) mData[i] = col_type(_Mat[i], static_cast<T>(0));
+				mData[M - 1][N - 1] = static_cast<T>(1);
 			}
 
 			place constexpr Matrix(const std::initializer_list<col_type>& _Init_List) noexcept
 			{
-				auto size = std::distance(_Init_List.begin(), _Init_List.end());
+				auto size = _Init_List.size();
 				assert(size <= N * M);
-				for (auto i = 0; i < size; ++i) _Elems[i] = *(_Init_List.begin() + i);
+				for (auto i = 0; i < size; ++i) mData[i] = *(_Init_List.begin() + i);
 			}
 
-			place constexpr iterator begin() const noexcept
+			place iterator begin() noexcept
 			{
-				return iterator(_Elems);
+				return mData;
 			}
 
-			place constexpr iterator end() const noexcept
+			place constexpr iterator end() noexcept
 			{
-				return iterator(_Elems + M);
+				return mData + M;
 			}
 
-			place constexpr const_iterator cbegin() const noexcept
+			place constexpr const_iterator begin() const noexcept
 			{
-				return const_iterator(_Elems);
+				return mData;
 			}
 
-			place constexpr const_iterator cend() const noexcept
+			place constexpr const_iterator end() const noexcept
 			{
-				return const_iterator(_Elems + M);
+				return mData + M;
 			}
 
 			place reference operator[](unsigned _Index) noexcept
 			{
 				assert(_Index <= M);
-				return _Elems[_Index];
+				return mData[_Index];
 			}
 
 			place value_type operator[](unsigned _Index) const noexcept
 			{
 				assert(_Index <= M);
-				return _Elems[_Index];
+				return mData[_Index];
 			}
 
 			place pointer data() noexcept
 			{
-				return pointer(_Elems);
+				return pointer(mData);
 			}
 
 			place const_pointer data() const noexcept
 			{
-				return (const_pointer)_Elems;
-			}
-
-			place Matrix& operator=(const Matrix& _Right)
-			{
-				std::copy(_Right.begin(), _Right.end(), begin());
-				return *this;
+				return mData;
 			}
 
 			place Matrix& operator+() { return*this; }
@@ -126,7 +115,7 @@ namespace la
 			//mathods end
 
 		private:
-			col_type _Elems[M];
+			col_type mData[M];
 		};
 
 		template<class T, size_t M, size_t N>

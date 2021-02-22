@@ -4,6 +4,7 @@
 
 #include<src/MathObjects/Vector.h>
 #include<src/MathObjects/Matrix.h>
+#include<src/MathObjects/Quaternion.h>
 //#include<src/glm/glm.hpp>
 //#include<src/glm/ext.hpp>
 

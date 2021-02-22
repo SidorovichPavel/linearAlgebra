@@ -15,6 +15,9 @@
     <ClCompile Include="src\linearAlgebra.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\MathObjects\Quaternion.cpp">
+      <Filter>src\MathObjects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\MathObjects\vector.h">
@@ -94,6 +97,9 @@
     </ClInclude>
     <ClInclude Include="src\glm\vector_relational.hpp">
       <Filter>src\glm</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MathObjects\Quaternion.h">
+      <Filter>src\MathObjects</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

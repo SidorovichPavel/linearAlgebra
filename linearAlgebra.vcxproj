@@ -156,9 +156,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\MathObjects\Quaternion.cpp" />
     <ClCompile Include="src\linearAlgebra.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\MathObjects\Quaternion.h" />
     <ClInclude Include="src\glm\common.hpp" />
     <ClInclude Include="src\glm\exponential.hpp" />
     <ClInclude Include="src\glm\ext.hpp" />
