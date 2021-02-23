@@ -157,6 +157,22 @@ namespace la
 			T mData[Dim];
 		};
 
+		template<size_t Dim>
+		bool operator==(const Vector<float, Dim>& v1, const Vector<float, Dim>& v2) noexcept
+		{
+			auto it1 = v1.begin();
+			auto it2 = v2.begin();
+			bool result = true;
+			for (; it1 != v1.end();)
+			{
+				if (fabsf(*it1 - *it2) > std::numeric_limits<float>::epsilon())
+					result = false;
+				++it1;
+				++it2;
+			}
+			return result;
+		}
+
 		template<class T, size_t _Dim>
 		place Vector<T, _Dim> operator+(const Vector<T, _Dim>& a, const Vector<T, _Dim>& b) noexcept
 		{
